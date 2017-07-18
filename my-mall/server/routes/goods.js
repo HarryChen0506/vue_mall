@@ -21,24 +21,58 @@ mongoose.connection.on('disconnected', function (){
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-    Goods.find({},function (err,doc){
+    let query = req.query;
+    let originUrl = req.originUrl;
+    //页数
+    let page = parseInt(req.param('page'))||1;
+    //数量
+    let length =parseInt(req.param('length'))||8;
+    //offset
+    let offset= (page-1)*length;
+    //排序
+    let sort = parseInt(req.param('sort'))||1;
+    let param = {};
+    //limit 限制条数
+    //skip 跳过？条
+
+    Goods.find(param,function (err,doc){
         if(err){
             res.json({
                 status:"500",
                 msg:"错误"
             })
         }else{
-            res.json({
-                status:"200",
-                result:{
-                    data: doc
-                },
-                pagination: {
-                    count: doc.length
-                }                
-            })
+            var total = doc.length;
+            getData(total);
         }
-    })
+    })     
+
+    function getData(total){
+        let GoodsModel = Goods.find(param).limit(length).skip(offset);
+        GoodsModel.sort({salePrice:sort});
+        GoodsModel.exec(function (err,doc){
+            if(err){
+                res.json({
+                    status:"500",
+                    msg:"错误"
+                })
+            }else{
+                res.json({
+                    status:"200",
+                    result:{
+                        data: doc
+                    },
+                    pagination: {
+                        count: doc.length,
+                        offset:offset,
+                        total:total
+                    }                
+                })
+            }
+        })
+
+    }
+    
 //   res.send('goods');
 });
 
