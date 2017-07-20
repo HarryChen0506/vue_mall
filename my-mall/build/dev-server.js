@@ -23,6 +23,15 @@ var proxyTable = config.dev.proxyTable
 var app = express()
 var compiler = webpack(webpackConfig)
 
+//dev环境可以模拟mock数据，通过express生成对应路由
+var router = express.Router();
+var goodsData = require('../mock/goods.json');
+router.get('/mock/goods',function (req,res,next){
+  res.json(goodsData);
+})
+app.use(router);
+
+
 var devMiddleware = require('webpack-dev-middleware')(compiler, {
   publicPath: webpackConfig.output.publicPath,
   quiet: true
