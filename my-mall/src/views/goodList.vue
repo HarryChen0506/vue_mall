@@ -86,7 +86,7 @@ export default {
     methods: {
         goodsList: function (){
             // console.log('goodsList');
-            axios.get('/goods',{
+            axios.get('/api/goods',{
             }).then(
                res => {
                    console.log(res)
