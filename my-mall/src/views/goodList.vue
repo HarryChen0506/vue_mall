@@ -22,19 +22,25 @@
                     <div class="filter stopPop" id="filter">
                         <dl class="filter-price">
                         <dt>Price:</dt>
-                        <dd><a href="javascript:void(0)">All</a></dd>
-                        <dd>
-                            <a href="javascript:void(0)">0 - 100</a>
-                        </dd>
-                        <dd>
-                            <a href="javascript:void(0)">100 - 500</a>
-                        </dd>
-                        <dd>
-                            <a href="javascript:void(0)">500 - 1000</a>
-                        </dd>
-                        <dd>
-                            <a href="javascript:void(0)">1000 - 2000</a>
-                        </dd>
+                            <dd  v-for="item in priceLevel" @click="filterByPrice(item,priceLevel)">
+                                <a :class="{'checked': item.checked}" href="javascript:void(0)">
+                                    <span v-if="item.level=='all'">所有</span>
+                                    <span v-else>{{item.gt}}-{{item.lte}}</span>
+                                </a>
+                            </dd>
+                            <!--<dd><a href="javascript:void(0)">All</a></dd>
+                            <dd>
+                                <a href="javascript:void(0)">0 - 100</a>
+                            </dd>
+                            <dd>
+                                <a href="javascript:void(0)">100 - 500</a>
+                            </dd>
+                            <dd>
+                                <a href="javascript:void(0)">500 - 1000</a>
+                            </dd>
+                            <dd>
+                                <a href="javascript:void(0)">1000 - 2000</a>
+                            </dd>-->
                         </dl>
                     </div>
 
@@ -79,7 +85,16 @@ export default {
             // msg: 'Welcome to Your Vue.js App',
             goodLists: [],
             sort: true,
-            page: 1
+            page: 1,
+            priceLevel:[
+                {level:'all',checked:true},
+                {level:1,gt:0,lte:100,checked:false},
+                {level:2,gt:100,lte:500,checked:false},
+                {level:3,gt:500,lte:1000,checked:false},
+                {level:4,gt:1000,lte:2000,checked:false}
+            ],
+            priceGt:'',
+            priceLte:''
         }
     },
     components:{
@@ -110,9 +125,38 @@ export default {
             this.page = 1;
             this.getGoodsList(params);
         },
+        filterByPrice: function (price,list){
+            list.forEach(function (item,index){
+                item.checked = false
+            })
+            price.checked = true;
+
+                    
+            if(price.level!=='all'){
+               this.priceGt = price.gt;
+               this.priceLte = price.lte;                           
+            }else{
+               this.priceGt = '';
+               this.priceLte = '';
+            }
+            this.page = 1;
+            var params = {
+                page: this.page,
+                priceGt:this.priceGt, 
+                priceLte:this.priceLte
+            }; 
+            this.goodLists = [];
+            this.getGoodsList(params);
+
+        },
         nextPage: function (){
             this.page++;
-            var params = {page: this.page};
+            var params = {
+                    page: this.page,
+                    priceGt:this.priceGt, 
+                    priceLte:this.priceLte
+            };          
+           
             this.getGoodsList(params);
         }
     }

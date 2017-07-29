@@ -299,7 +299,9 @@
   transform: rotate(180deg);
 }
 
-.filter .filter-price dd a:hover, .filter .filter-price dd .cur {
+.filter .filter-price dd a:hover, 
+.filter .filter-price dd a.checked, 
+.filter .filter-price dd .cur {
   -webkit-transition: padding-left .3s ease-out;
   transition: padding-left .3s ease-out;
   border-left: 2px solid #ee7a23;

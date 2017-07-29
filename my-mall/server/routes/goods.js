@@ -31,7 +31,21 @@ router.get('/', function(req, res, next) {
     let offset= (page-1)*length;
     //排序
     let sort = parseInt(req.param('sort'))||1;
+    let priceGt = parseFloat(query.priceGt);
+    let priceLte = parseFloat(query.priceLte);
+
     let param = {};
+    
+    if(isNaN(priceGt)==false || isNaN(priceLte)==false){
+        param.salePrice = {};
+        if(isNaN(priceGt)==false){
+            param.salePrice.$gt = priceGt;
+        }
+        if(isNaN(priceLte)==false){
+            param.salePrice.$lte = priceLte
+        } 
+    }   
+    
     //limit 限制条数
     //skip 跳过？条
 
