@@ -6,7 +6,9 @@ var productSchema = new Schema({
     "productName" : String,
     "salePrice" : Number,
     "productImage" : String,
-    "productUrl" : String
+    "productUrl" : String,
+    "productNum": Number,
+    "checked": String
 })
 
 //导出模型，关联到Good里

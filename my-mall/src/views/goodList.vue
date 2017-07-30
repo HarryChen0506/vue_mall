@@ -56,7 +56,7 @@
                                         <div class="name">{{good.productName}}</div>
                                         <div class="price">{{good.salePrice}}</div>
                                         <div class="btn-area">
-                                        <a href="javascript:;" class="btn btn--m">加入购物车</a>
+                                        <a href="javascript:;" class="btn btn--m" @click="addCart(good)">加入购物车</a>
                                         </div>
                                     </div>
                                 </li>                                              
@@ -152,6 +152,15 @@ export default {
         nextPage: function (){
             this.page++;           
             this.getGoodsList(this.params);
+        },
+        addCart: function (good){
+            console.log('good',good)
+            let params = {
+                productId: good.productId
+            }
+            axios.post('/api/goods/addCart',params).then(function (res){
+                console.log(res)
+            })
         }
     }
 }

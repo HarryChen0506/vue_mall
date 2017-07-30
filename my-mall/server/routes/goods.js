@@ -3,6 +3,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 //获取Goods模型
 var Goods = require('../models/goods');
+var Users = require('../models/users');
 var utiltool = require('../utiltool/tool.js');
 
 //链接数据库
@@ -20,7 +21,7 @@ mongoose.connection.on('disconnected', function (){
 
 
 
-/* GET users listing. */
+/* GET goods listing. */
 router.get('/', function(req, res, next) {
     let query = req.query;
     let originUrl = req.originUrl;
@@ -92,5 +93,73 @@ router.get('/', function(req, res, next) {
     
 //   res.send('goods');
 });
+// 加入购物车
+router.post('/addCart',function(req, res, next){
+    let userId = '100000077';
+    let productId = req.body.productId;
+
+    Users.findOne({userId:userId},function (err,userDoc){
+        if(err){
+            handler4err(err, res)           
+        }else{
+            if(userDoc){
+                // goodItem 保存购物车信息： 如果没有就新增一条，有的话就在原来数量上加1
+                let goodItem = '';
+                userDoc.cartList.forEach(function (item, index){
+                    if( item.productId == productId ){
+                        goodItem = item;
+                        item.productNum ++;
+                    }
+                })
+                if(goodItem){
+                    //直接修改数据
+                    userDoc.save(function (err,doc){
+                            if(err){
+                                handler4err(err, res)                 
+                            }else{
+                                res.json({
+                                    status: 200,
+                                    msg: 'success' 
+                                }) 
+                            }    
+                        })
+                }else{
+                    //新增数据
+                     Goods.findOne({productId: productId}, function (err, goodDoc){
+                        if(err){
+                            handler4err(err, res)               
+                        }else {
+                            goodDoc.productNum = 1;
+                            goodDoc.checked = "1";
+                            userDoc.cartList.push(goodDoc);
+                            userDoc.save(function (err,doc){
+                                if(err){
+                                    handler4err(err, res)                 
+                                }else{
+                                    res.json({
+                                        status: 200,
+                                        msg: 'success' 
+                                    }) 
+                                }    
+                            })
+                        }                   
+                    })
+                }
+               
+            }
+          
+        }
+    })
+   
+})
+
+//公用函数
+function handler4err(err, res){
+     res.json({
+        status: 500,
+        msg: err.message
+    })
+}
+
 
 module.exports = router;
