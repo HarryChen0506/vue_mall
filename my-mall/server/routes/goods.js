@@ -3,6 +3,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 //获取Goods模型
 var Goods = require('../models/goods');
+var utiltool = require('../utiltool/tool.js');
 
 //链接数据库
 mongoose.connect('mongodb://127.0.0.1:27017/mall',{useMongoClient:true});
@@ -35,13 +36,15 @@ router.get('/', function(req, res, next) {
     let priceLte = parseFloat(query.priceLte);
 
     let param = {};
+
+    console.log(priceGt,utiltool.isEmpty(priceGt));
     
-    if(isNaN(priceGt)==false || isNaN(priceLte)==false){
+    if(!utiltool.isEmpty(priceGt) || !utiltool.isEmpty(priceLte)){
         param.salePrice = {};
-        if(isNaN(priceGt)==false){
+        if(!utiltool.isEmpty(priceGt)){
             param.salePrice.$gt = priceGt;
         }
-        if(isNaN(priceLte)==false){
+        if(!utiltool.isEmpty(priceLte)){
             param.salePrice.$lte = priceLte
         } 
     }   

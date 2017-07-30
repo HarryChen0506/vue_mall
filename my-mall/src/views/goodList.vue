@@ -87,7 +87,7 @@ export default {
             sort: true,
             page: 1,
             priceLevel:[
-                {level:'all',checked:true},
+                {level:'all',gt:'',lte:'',checked:true},
                 {level:1,gt:0,lte:100,checked:false},
                 {level:2,gt:100,lte:500,checked:false},
                 {level:3,gt:500,lte:1000,checked:false},
@@ -104,6 +104,16 @@ export default {
     mounted: function (){
         this.getGoodsList();
     },
+    computed:{
+        params: function(){
+            return {
+                page: this.page,
+                priceGt:this.priceGt, 
+                priceLte:this.priceLte,
+                sort: this.sort ? 1:-1
+            }            
+        }
+    },
     methods: {
         getGoodsList: function (params){
             // console.log('goodsList');
@@ -111,7 +121,7 @@ export default {
                params:params
             }).then(
                res => {
-                   console.log(res)
+                //    console.log(res)
                    this.goodLists = this.goodLists.concat(res.data.result.data) ;
                 }
             )
@@ -119,19 +129,15 @@ export default {
         sortByPrice: function (){
             console.log('排序');
             this.sort = !this.sort;
-            var sort = this.sort?1:-1;
-            var params = { "sort": sort,"page":1 };
-            this.goodLists = [];
             this.page = 1;
-            this.getGoodsList(params);
+            this.goodLists = [];            
+            this.getGoodsList(this.params);
         },
         filterByPrice: function (price,list){
             list.forEach(function (item,index){
                 item.checked = false
             })
-            price.checked = true;
-
-                    
+            price.checked = true;            
             if(price.level!=='all'){
                this.priceGt = price.gt;
                this.priceLte = price.lte;                           
@@ -139,25 +145,13 @@ export default {
                this.priceGt = '';
                this.priceLte = '';
             }
-            this.page = 1;
-            var params = {
-                page: this.page,
-                priceGt:this.priceGt, 
-                priceLte:this.priceLte
-            }; 
+            this.page = 1;            
             this.goodLists = [];
-            this.getGoodsList(params);
-
+            this.getGoodsList(this.params);
         },
         nextPage: function (){
-            this.page++;
-            var params = {
-                    page: this.page,
-                    priceGt:this.priceGt, 
-                    priceLte:this.priceLte
-            };          
-           
-            this.getGoodsList(params);
+            this.page++;           
+            this.getGoodsList(this.params);
         }
     }
 }
