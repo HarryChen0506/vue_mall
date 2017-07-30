@@ -37,8 +37,6 @@ router.get('/', function(req, res, next) {
     let priceLte = parseFloat(query.priceLte);
 
     let param = {};
-
-    console.log(priceGt,utiltool.isEmpty(priceGt));
     
     if(!utiltool.isEmpty(priceGt) || !utiltool.isEmpty(priceLte)){
         param.salePrice = {};

@@ -154,12 +154,15 @@ export default {
             this.getGoodsList(this.params);
         },
         addCart: function (good){
-            console.log('good',good)
             let params = {
                 productId: good.productId
             }
             axios.post('/api/goods/addCart',params).then(function (res){
-                console.log(res)
+                if(res.data.status == 200){
+                    alert('添加购物车成功')
+                }else{
+                     alert('添加购物车失败')
+                }
             })
         }
     }
