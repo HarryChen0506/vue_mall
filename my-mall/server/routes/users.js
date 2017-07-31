@@ -27,6 +27,12 @@ router.post('/login', function (req, res, next){
                     path:'/', 
                     // secure:true //只有http才会从客户端传输到服务端
                 });
+                res.cookie('userName',userDoc.userName,{
+                    maxAge:1000*60*60,
+                    httpOnly:true, 
+                    path:'/', 
+                    // secure:true //只有http才会从客户端传输到服务端
+                });
                 res.json({
                     status: 200,
                     msg: '登录成功',
@@ -59,6 +65,25 @@ router.post('/logout', function (req, res, next){
             msg: '登出成功',
             result: ''
         })       
+})
+//监测登录
+router.get('/checkLogin', function (req, res, next){
+    if(req.cookies.userId){
+        res.json({
+            status: 200,
+            msg: '已经登录',
+            result: {
+                userId: req.cookies.userId,
+                userName: req.cookies.userName
+            }
+        })
+    }else{
+         res.json({
+            status: 1001,
+            msg: '未登录',
+            result: ''
+        })
+    }
 })
 
 //公用函数

@@ -159,9 +159,9 @@ export default {
             }
             axios.post('/api/goods/addCart',params).then(function (res){
                 if(res.data.status == 200){
-                    alert('添加购物车成功')
+                    alert(res.data.msg||'添加购物车成功')
                 }else{
-                     alert('添加购物车失败')
+                     alert(res.data.msg||'添加购物车失败')
                 }
             })
         }

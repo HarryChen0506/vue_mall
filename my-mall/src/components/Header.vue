@@ -90,6 +90,9 @@ export default {
             nickName:''
         }
   },
+  mounted: function (){
+      this.checkLogin();
+  },
   methods: {
         openLoginModal: function (){
             this.loginModal_flag = true
@@ -97,30 +100,41 @@ export default {
         closeLoginModal: function (){
             this.loginModal_flag = false
         },
+        checkLogin: function (){
+            axios.get('/api/users/checkLogin').then((res)=>{                
+                if(res.data.status == 200){
+                    this.nickName = res.data.result.userName;
+                    this.isLogin = true;                                    
+                }
+            })
+        },
         login: function (){
-            var self = this;
             var params = {
                 userName: this.userName,
                 userPwd: this.userPwd
             };
-            axios.post('/api/users/login',params).then(function(res){
+            axios.post('/api/users/login',params).then((res)=>{
                 console.log(res);
                 if(res.data.status == 200){
-                    self.nickName = res.data.result.userName;
-                    self.isLogin = true;
-                    self.closeLoginModal();
+                    this.nickName = res.data.result.userName;
+                    this.isLogin = true;
+                    this.errorTip = false;
+                    this.userName='';
+                    this.userPwd= '';
+                    this.closeLoginModal();                    
                 }else{
-                    self.errorTip = true;
+                    this.userName='';
+                    this.userPwd= '';
+                    this.errorTip = true;
                 }
             })
         },
         logout: function (){
-            var self = this;
-            axios.post('/api/users/logout').then(function(res){
+            axios.post('/api/users/logout').then((res)=>{
                 console.log(res);
                 if(res.data.status == 200){
-                    self.nickName = '';
-                    self.isLogin = false;
+                    this.nickName = '';
+                    this.isLogin = false;
                 }
             })
         }
