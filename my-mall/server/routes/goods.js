@@ -26,13 +26,13 @@ router.get('/', function(req, res, next) {
     let query = req.query;
     let originUrl = req.originUrl;
     //页数
-    let page = parseInt(req.param('page'))||1;
+    let page = parseInt(query.page)||1;
     //数量
-    let length =parseInt(req.param('length'))||8;
+    let length =parseInt(query.length)||8;
     //offset
     let offset= (page-1)*length;
     //排序
-    let sort = parseInt(req.param('sort'))||1;
+    let sort = parseInt(query.sort)||1;
     let priceGt = parseFloat(query.priceGt);
     let priceLte = parseFloat(query.priceLte);
 
@@ -93,7 +93,7 @@ router.get('/', function(req, res, next) {
 });
 // 加入购物车
 router.post('/addCart',function(req, res, next){
-    let userId = '100000077';
+    let userId = req.cookies.userId;
     let productId = req.body.productId;
 
     Users.findOne({userId:userId},function (err,userDoc){

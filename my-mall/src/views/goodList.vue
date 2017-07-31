@@ -71,6 +71,13 @@
             </div>
         </div>
         <nav-footer></nav-footer>
+        <modal v-bind:mdShow="mdShow" v-on:close="closeModal">
+            <div slot="md-title">购物车</div>
+            <div slot="md-content">当前未登录, 请登陆后再点击购买</div>
+            <div slot="btn-group">
+                <a href="javascript:;" class="btn btn--m" @click="closeModal()">关闭</a>
+            </div>
+        </modal>
   </div>
 </template>
 
@@ -78,6 +85,7 @@
 import axios from 'axios';
 import NavHeader from '../components/Header';
 import NavFooter from '../components/Footer';
+import Modal from '../components/modal';
 export default {
     name: 'goodList',
     data () {
@@ -94,12 +102,14 @@ export default {
                 {level:4,gt:1000,lte:2000,checked:false}
             ],
             priceGt:'',
-            priceLte:''
+            priceLte:'',
+            mdShow: false
         }
     },
     components:{
         NavHeader:NavHeader,
-        NavFooter
+        NavFooter,
+        Modal
     },
     mounted: function (){
         this.getGoodsList();
@@ -157,13 +167,17 @@ export default {
             let params = {
                 productId: good.productId
             }
-            axios.post('/api/goods/addCart',params).then(function (res){
+            axios.post('/api/goods/addCart',params).then((res)=>{
                 if(res.data.status == 200){
                     alert(res.data.msg||'添加购物车成功')
                 }else{
-                     alert(res.data.msg||'添加购物车失败')
+                    //  alert(res.data.msg||'添加购物车失败')
+                    this.mdShow = true
                 }
             })
+        },
+        closeModal: function (){
+            this.mdShow = false;
         }
     }
 }
