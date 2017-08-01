@@ -1,6 +1,7 @@
 <template>
   <div> 
         <nav-header></nav-header>
+        <!--<button v-on:click="(function (){ log(123) })()"> 点击 </button>-->
         <div class="nav-breadcrumb-wrap">
             <div class="container">
                 <nav class="nav-breadcrumb">
@@ -78,6 +79,18 @@
                 <a href="javascript:;" class="btn btn--m" @click="closeModal()">关闭</a>
             </div>
         </modal>
+        <modal v-bind:mdShow="mdShow_todo" v-on:close="mdShow_todo = false">
+            <div slot="md-title">购物车</div>
+            <div slot="md-content">
+                <svg class="icon-status-ok">
+                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-status-ok"></use>
+                </svg>
+                添加购物车成功</div>
+            <div slot="btn-group">
+                <a href="javascript:;" class="btn btn--m" @click="mdShow_todo = false">继续购买</a>
+                <a href="javascript:;" class="btn btn--m" @click="mdShow_todo = false">关闭</a>
+            </div>
+        </modal>
   </div>
 </template>
 
@@ -103,7 +116,8 @@ export default {
             ],
             priceGt:'',
             priceLte:'',
-            mdShow: false
+            mdShow: false,
+            mdShow_todo: false
         }
     },
     components:{
@@ -125,6 +139,10 @@ export default {
         }
     },
     methods: {
+       
+        log: function (val){
+            return console.log(val);
+        },
         getGoodsList: function (params){
             // console.log('goodsList');
             axios.get('/api/goods',{
@@ -169,7 +187,8 @@ export default {
             }
             axios.post('/api/goods/addCart',params).then((res)=>{
                 if(res.data.status == 200){
-                    alert(res.data.msg||'添加购物车成功')
+                    // alert(res.data.msg||'添加购物车成功')
+                    this.mdShow_todo = true
                 }else{
                     //  alert(res.data.msg||'添加购物车失败')
                     this.mdShow = true
