@@ -5,8 +5,8 @@
         <div class="nav-breadcrumb-wrap">
             <div class="container">
                 <nav class="nav-breadcrumb">
-                <a href="/">Home</a>
-                <span>Goods</span>
+                <a href="/">首页</a>
+                <span>商品列表</span>
                 </nav>
             </div>
         </div>

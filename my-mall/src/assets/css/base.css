@@ -532,6 +532,7 @@ a:hover {
   padding: 10px 0;
   line-height: 25px;
   font-size: 14px;
+  text-align: left;
 }
 
 .nav-breadcrumb a {

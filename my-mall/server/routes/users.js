@@ -86,6 +86,37 @@ router.get('/checkLogin', function (req, res, next){
     }
 })
 
+//查询购物车
+router.get('/cart', function (req, res, next){
+     let query = req.query;
+     let userId = req.cookies.userId;
+     let user = {
+         userId: userId
+     }
+     Users.findOne(user, function (err, userDoc){
+         if(err){
+              handler4err(err, res)
+         }else{
+             if(userDoc){
+                  res.json({
+                    status: 200,
+                    msg: '查询购物车成功',
+                    result: {
+                        data: userDoc.cartList
+                    }
+                })
+             }else{
+                 res.json({
+                    status: 510,
+                    msg: '未查询到数据',
+                    result: ''
+                })
+             }
+         }
+     })
+
+})
+
 //公用函数
 function handler4err(err, res){
      res.json({
