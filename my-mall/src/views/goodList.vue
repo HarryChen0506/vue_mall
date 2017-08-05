@@ -88,7 +88,8 @@
                 添加购物车成功</div>
             <div slot="btn-group">
                 <a href="javascript:;" class="btn btn--m" @click="mdShow_todo = false">继续购买</a>
-                <a href="javascript:;" class="btn btn--m" @click="mdShow_todo = false">关闭</a>
+                <!--<a href="javascript:;" class="btn btn--m" @click="mdShow_todo = false">关闭</a>-->
+                 <router-link  to="/cart" class="btn btn--m">去看购物车</router-link>
             </div>
         </modal>
   </div>

@@ -6,6 +6,7 @@
             <div class="container">
                 <nav class="nav-breadcrumb">
                 <a href="/">首页</a>
+                <router-link to="/goods">商品</router-link >
                 <span>购物车</span>
                 </nav>
             </div>
@@ -75,7 +76,7 @@
                                     </a>
                                 </div>
                                 <div class="cart-item-pic">
-                                    <img v-bind:src="'/static/'+item.productImage">
+                                    <img v-bind:src="'/static/'+item.productImage" v-bind:title="item.productName">
                                 </div>
                                 <div class="cart-item-title">
                                     <div class="item-name">{{item.productName}}</div>
@@ -100,10 +101,10 @@
                                 </div>
                                 <div class="cart-tab-5">
                                 <div class="cart-item-opration">
-                                    <a href="javascript:;" class="item-edit-btn">
-                                    <svg class="icon icon-del">
-                                        <use xlink:href="#icon-del"></use>
-                                    </svg>
+                                    <a href="javascript:;" class="item-edit-btn" @click="delCart(item)">
+                                        <svg class="icon icon-del">
+                                            <use xlink:href="#icon-del"></use>
+                                        </svg>
                                     </a>
                                 </div>
                                 </div>
@@ -135,7 +136,9 @@
                 </div>
             </div>
         </div>
-        <nav-footer></nav-footer>        
+        <nav-footer></nav-footer>   
+        <Modal-confirm ref="dialog"></Modal-confirm>   
+       
   </div>
 </template>
 
@@ -169,6 +172,7 @@ import axios from 'axios';
 import NavHeader from '../components/Header';
 import NavFooter from '../components/Footer';
 import Modal from '../components/modal';
+import ModalConfirm from '../components/modalConfirm';
 export default {
     name: 'cartList',
     data () {
@@ -180,7 +184,8 @@ export default {
     components:{
         NavHeader:NavHeader,
         NavFooter,
-        Modal
+        Modal,
+        ModalConfirm
     },
     mounted: function (){
         this.init();
@@ -202,14 +207,41 @@ export default {
        getCartList: function (params){
            axios.get('/api/users/cart',{
                params:params
-            }).then(
-               res => {
+            }).then((res) => {
                 //    console.log(res)
-                   this.cartList = res.data.result.data;
+                if(res.data.status == 200){
+                    this.cartList = res.data.result.data;
+                }else if(res.data.status == 1001){
+                    alert('当前未登录');
                 }
-            )
-       }
-       
+            })
+       },
+       httpDelCart: function (item){
+           console.log(item)
+           var productId = item.productId;
+           axios.post('/api/users/cart/del',{             
+                productId: productId                  
+            }).then((res) => {
+                //    console.log(res)
+                if(res.data.status == 200){
+                    this.init();
+                }else{
+                    alert(res.data.msg||'删除失败');
+                }
+            })
+       },
+       delCart: function (item){
+           var self = this;
+           this.$refs.dialog.confirm({
+               title: '购物车',
+               content:'确定删除该商品吗？',
+           }).then(()=>{
+               console.log('成功的回调')
+               this.httpDelCart(item);
+           },()=>{
+               console.log('失败的回调')
+           })
+       }       
     }
 }
 </script>

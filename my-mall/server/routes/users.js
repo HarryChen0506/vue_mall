@@ -116,6 +116,45 @@ router.get('/cart', function (req, res, next){
      })
 
 })
+//删除购物车
+router.post('/cart/del', function (req, res, next){
+    let query = req.query;
+    let userId = req.cookies.userId;
+    let productId = req.body.productId;
+    let user = {
+        userId: userId
+    }
+    Users.update(user,{$pull:{
+        'cartList':{
+            'productId':productId
+        }
+    }},function (err, userDoc){
+        if(err){
+            handler4err(err, res)
+        }else{
+            if(userDoc.nModified!==0){
+                 res.json({
+                    status: 200,
+                    msg: '删除成功',
+                    result:{
+                        productId: productId
+                    }
+                })
+            }else{
+                res.json({
+                    status: 210,
+                    msg: '未找到数据,删除失败',
+                    result:{
+                        productId: productId
+                    }
+                })
+            }
+           
+        }
+    })
+
+   
+})
 
 //公用函数
 function handler4err(err, res){
