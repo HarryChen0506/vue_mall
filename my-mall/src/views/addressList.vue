@@ -66,7 +66,7 @@
             <div class="addr-list-wrap">
                 <div class="addr-list">
                     <ul>
-                        <li v-for="(item, index) in addressList" :class="{'check': selectedAddressIndex == index}" @click="selectAddress(item, index)">
+                        <li v-for="(item, index) in addressListByOrder" :class="{'check': selectedAddressIndex == index}" @click="selectAddress(item, index)">
                             <dl>
                                 <dt>{{item.userName}}</dt>
                                 <dd class="address">{{item.streetName}}</dd>
@@ -93,11 +93,11 @@
                     </ul>
                 </div>
                 <div class="shipping-addr-more">
-                    <a class="addr-more-btn up-down-btn" href="javascript:;">
-                        more
+                    <a class="addr-more-btn up-down-btn" href="javascript:;" @click="showMore()" :class="{'open': limitNum >limitDefault}">
+                        更多
                         <i class="i-up-down">
-                        <i class="i-up-down-l"></i>
-                        <i class="i-up-down-r"></i>
+                            <i class="i-up-down-l"></i>
+                            <i class="i-up-down-r"></i>
                         </i>
                     </a>
                 </div>
@@ -143,13 +143,16 @@ import axios from 'axios';
 import NavHeader from '../components/Header';
 import NavFooter from '../components/Footer';
 import ModalConfirm from '../components/modalConfirm';
+import _ from 'lodash';
 export default {
     name: 'addressList',
     data () {
         return {
             // msg: 'Welcome to Your Vue.js App',  
             addressList: [],
-            selectedAddressIndex: 0         
+            selectedAddressIndex: 0,
+            limitDefault: 3,
+            limitNum: ''        
         }
     },
     components:{
@@ -157,13 +160,17 @@ export default {
         NavFooter,
         ModalConfirm
     },
-    mounted: function (){
+    mounted: function (){        
+        this.limitNum = this.limitDefault;
         this.init();
     },
     computed:{
         params: function(){
             return {                
             }            
+        },
+        addressListByOrder: function (){
+            return _.orderBy(this.addressList, ['isDefault'],['desc']).slice(0,this.limitNum)
         }
     },
     methods: {
@@ -187,14 +194,14 @@ export default {
         },
         setDefaultAddress: function (address){
             //设置默认地址
-            console.log(address);
             let addressId = address.addressId;
             axios.post('/api/users/address/setDefault',{
                 addressId: addressId
             }).then((res) => {
                 //    console.log(res)
                 if(res.data.status == 200){
-                    this.init()
+                    this.init();
+                    this.selectedAddressIndex = 0;
                 }else{
                     alert('设置默认地址失败');
                 }
@@ -222,6 +229,14 @@ export default {
                     alert('删除地址失败');
                 }
             }) 
+        },
+        showMore: function (){
+            if(this.limitNum > this.limitDefault){
+                this.limitNum = this.limitDefault;
+            }else{
+                 this.limitNum = this.addressList.length;
+            }
+           
         } 
     }
 }
