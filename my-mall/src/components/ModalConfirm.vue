@@ -1,6 +1,6 @@
 <template>
   <div v-if="mdShow">
-    <div class="md-modal modal-msg md-modal-transition md-show" v-bind:class="{'md-show':mdShow}">
+    <div class="md-modal modal-msg md-modal-transition md-show">
         <div class="md-modal-inner">
             <div class="md-top">
                 <div class="md-title">
@@ -29,9 +29,8 @@
 </style>
 
 <script>
-
 export default  {
-    name: 'modal_confirm',
+    name: 'modalConfirm',
     props: [],
     data () {
         return {
@@ -68,6 +67,5 @@ export default  {
         }
     }
 };
-
 </script>
 

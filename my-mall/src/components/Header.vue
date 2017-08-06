@@ -121,7 +121,8 @@ export default {
                     this.errorTip = false;
                     this.userName='';
                     this.userPwd= '';
-                    this.closeLoginModal();                    
+                    this.closeLoginModal(); 
+                    window.location.reload(); // 等同于 window.location.href = '.....'                   
                 }else{
                     this.userName='';
                     this.userPwd= '';

@@ -148,12 +148,86 @@ router.post('/cart/del', function (req, res, next){
                         productId: productId
                     }
                 })
-            }
-           
+            }           
         }
     })
 
    
+})
+//编辑购物车
+router.post('/cart/edit', function (req, res, next){
+    let query = req.query;
+    let userId = req.cookies.userId;
+    let productId = req.body.productId;
+    let productNum = req.body.productNum;
+    let checked = req.body.checked;
+    Users.update({'userId': userId, 'cartList.productId':productId},{
+        'cartList.$.checked': checked,
+        'cartList.$.productNum': productNum
+    }, function (err, userDoc){
+        if(err){
+            handler4err(err, res)
+        }else{
+        if(userDoc.nModified!==0){
+                res.json({
+                status: 200,
+                msg: '修改成功',
+                result:{
+                    productId: productId
+                }
+            })
+        }else{
+            res.json({
+                status: 210,
+                msg: '未找到数据,修改失败',
+                result:{
+                    productId: productId
+                }
+            })
+        }
+
+        }
+    })
+})
+//选择所有购物车
+router.post('/cart/checkAll', function(req, res, next){
+    let query = req.query;
+    let userId = req.cookies.userId;
+    let checkAll = req.body.checkAll;
+    let user = {
+         userId: userId
+     }
+
+    Users.findOne(user, function(err, userDoc){
+        if(err){
+            handler4err(err);
+        }else{
+            if(userDoc){
+                userDoc.cartList.forEach(function (item){
+                    item.checked = checkAll?'1':'0';
+                })
+                userDoc.save(function (err2, userDoc2){
+                    if(err2){
+                        handler4err(err2);
+                    }else{
+                        if(userDoc2){
+                            res.json({
+                                status: 200,
+                                msg: '选择成功',
+                                result:''
+                            })
+                        }else{
+                            res.json({
+                                status: 500,
+                                msg: '选择失败',
+                                result:''
+                            })
+                        }
+                    }
+                })
+            }
+        }
+    })
 })
 
 //公用函数
