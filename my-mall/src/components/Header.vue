@@ -83,8 +83,8 @@ export default {
   data () {
         return {
             loginModal_flag: false,
-            userName: '',
-            userPwd: '',
+            userName: 'admin',
+            userPwd: '123456',
             errorTip: false,
             isLogin: false,
             nickName:''

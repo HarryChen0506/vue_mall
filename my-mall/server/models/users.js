@@ -15,7 +15,14 @@ var userSchema = new Schema({
         "productNum" : Number,
         "checked" : String
     }],
-    "addressList": Array
+    "addressList": [{
+        "addressId" : String,
+        "userName" : String,
+        "streetName" : String,
+        "postCode" : String,
+        "tel" : String,
+        "isDefault" : Boolean
+    }]
 })
 
 //导出模型，User

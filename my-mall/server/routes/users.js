@@ -230,6 +230,161 @@ router.post('/cart/checkAll', function(req, res, next){
     })
 })
 
+//查询地址列表
+router.get('/address', function(req, res, next){
+    let query = req.query;
+    let userId = req.cookies.userId;
+    let user = {
+        userId: userId
+    }
+    let UsersModel = Users.findOne(user);
+    UsersModel.exec(function (err, userDoc){
+        if(err){
+            handler4err(err);
+        }else{
+            if(userDoc){
+                res.json({
+                    status: 200,
+                    msg: '地址列表查询成功',
+                    result:{
+                        data: userDoc.addressList
+                    }
+                })
+            }else{
+                res.json({
+                    status: 500,
+                    msg: '地址列表查询失败',
+                    result:''
+                })
+            }
+        }
+    })
+
+    // Users.findOne(user, function(err, userDoc){
+    //     if(err){
+    //         handler4err(err);
+    //     }else{
+    //         if(userDoc){
+    //             res.json({
+    //                 status: 200,
+    //                 msg: '地址列表查询成功',
+    //                 result:{
+    //                     data: userDoc.addressList
+    //                 }
+    //             })
+    //         }else{
+    //             res.json({
+    //                 status: 500,
+    //                 msg: '地址列表查询失败',
+    //                 result:''
+    //             })
+    //         }
+    //     }
+    // })
+})
+//设置默认地址
+router.post('/address/setDefault', function (req, res, next){
+    let query = req.query;
+    let userId = req.cookies.userId;
+    let addressId = req.body.addressId;
+    let user = {
+        userId: userId
+    }
+    if(!addressId){
+        res.json({
+            status: 500,
+            msg: '请求参数错误',
+            result:''
+        })
+        return ;
+    }
+    Users.findOne(user, function(err, userDoc){
+        if(err){
+            handler4err(err);
+        }else{
+            if(userDoc){
+                userDoc.addressList.forEach(function(item){
+                    if(item.addressId == addressId){
+                        item.isDefault = true;
+                    }else{
+                        item.isDefault = false;
+                    }
+                })
+                userDoc.save(function(err2, userDoc2){
+                    if(err2){
+                        handler4err(err2);
+                    }else{
+                        if(userDoc2){
+                            res.json({
+                                status: 200,
+                                msg: '设置默认地址成功',
+                                result:''
+                            })
+                        }else{
+                            res.json({
+                                status: 500,
+                                msg: '设置默认地址失败',
+                                result:''
+                            })
+                        }
+                        
+                    }
+                })
+            }
+        }
+    })
+
+})
+//删除地址
+router.post('/address/del', function (req, res, next){
+    let query = req.query;
+    let userId = req.cookies.userId;
+    let addressId = req.body.addressId;
+    let user = {
+        userId: userId
+    }
+    if(!addressId){
+        res.json({
+            status: 500,
+            msg: '请求参数错误',
+            result:''
+        })
+        return ;
+    }
+    Users.update(user,{
+        $pull:{
+            'addressList':{
+                'addressId':addressId
+            }
+        }
+    },function (err, userDoc){
+        if(err){
+            handler4err(err, res)
+        }else{
+            if(userDoc.nModified!==0){
+                 res.json({
+                    status: 200,
+                    msg: '删除成功',
+                    result:{
+                        addressId: addressId
+                    }
+                })
+            }else{
+                res.json({
+                    status: 210,
+                    msg: '未找到数据,删除失败',
+                    result:{
+                        addressId: addressId
+                    }
+                })
+            }           
+        }
+    })
+
+})
+
+
+
 //公用函数
 function handler4err(err, res){
      res.json({

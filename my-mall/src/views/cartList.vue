@@ -97,7 +97,7 @@
                             </div>
                             </div>
                             <div class="cart-tab-4">
-                            <div class="item-price-total">{{item.salePrice*item.productNum}}</div>
+                            <div class="item-price-total">{{item.salePrice*item.productNum  | currency('￥ ')}}</div>
                             </div>
                             <div class="cart-tab-5">
                             <div class="cart-item-opration">
@@ -129,7 +129,7 @@
                             总计: <span class="total-price">{{totalPrice | currency('￥ ')}}</span>
                         </div>
                         <div class="btn-wrap">
-                            <a class="btn btn--red">结算</a>
+                            <a class="btn btn--red" :class="{'btn--dis':checkAllCount<=0}" @click="checkOut">结算</a>
                         </div>
                     </div>
                 </div>
@@ -214,7 +214,9 @@ export default {
         totalPrice: function (){
             let price = 0; 
             this.cartList.forEach(function (item){
-                price += parseInt(item.productNum)*parseFloat(item.salePrice);
+                if(item.checked == '1'){
+                    price += parseInt(item.productNum)*parseFloat(item.salePrice);
+                }                
             })
             return price;
         }
@@ -304,7 +306,14 @@ export default {
                     alert(res.data.msg||'选择所有失败');
                 }
             })
-        }       
+        },
+        checkOut: function (){
+            if(this.checkAllCount>0){
+                this.$router.push({
+                    path: '/address'
+                })
+            }
+        }      
     }
 }
 </script>
