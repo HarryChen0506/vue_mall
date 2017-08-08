@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 //Users
 var Users = require('../models/users');
 var utiltool = require('../utiltool/tool.js');
+var _ = require('lodash');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -247,7 +248,7 @@ router.get('/address', function(req, res, next){
                     status: 200,
                     msg: '地址列表查询成功',
                     result:{
-                        data: userDoc.addressList
+                        data: _.orderBy(userDoc.addressList, ['isDefault'],['desc'])
                     }
                 })
             }else{
