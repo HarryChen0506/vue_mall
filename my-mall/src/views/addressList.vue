@@ -124,7 +124,7 @@
                 </div>
             </div>
             <div class="next-btn-wrap">
-                <a class="btn btn--m btn--red">Next</a>
+                <a class="btn btn--m btn--red" @click="next()">下一步</a>
             </div>
         </div>
     </div>
@@ -150,7 +150,8 @@ export default {
         return {
             // msg: 'Welcome to Your Vue.js App',  
             addressList: [],
-            selectedAddressIndex: 0,
+            selectedAddressIndex:'',
+            selectedAddressId:'',
             limitDefault: 3,
             limitNum: ''        
         }
@@ -162,6 +163,7 @@ export default {
     },
     mounted: function (){        
         this.limitNum = this.limitDefault;
+        this.selectedAddressIndex = 0;
         this.init();
     },
     computed:{
@@ -184,13 +186,16 @@ export default {
                 //    console.log(res)
                 if(res.data.status == 200){
                     this.addressList = res.data.result.data;
+                    this.selectedAddressId = this.addressList[0].addressId;
                 }else if(res.data.status == 1001){
                     alert('当前未登录');
                 }
             })
         },
         selectAddress: function (address, index){
-            this.selectedAddressIndex = index
+            this.selectedAddressIndex = index;
+            this.selectedAddressId = address.addressId;
+            console.log('selectedAddressId',this.selectedAddressId)
         },
         setDefaultAddress: function (address){
             //设置默认地址
@@ -237,6 +242,15 @@ export default {
                  this.limitNum = this.addressList.length;
             }
            
+        },
+        next: function(){
+            // 带查询参数，变成/backend/order?selected=2
+            // this.$router.push({path: '/backend/order', query: {selected: "2"}});
+            if(!this.selectedAddressId){
+                alert('请选择收货地址');
+                return;
+            }
+            this.$router.push({path: '/orderConfirm', query: {addressId: this.selectedAddressId}});
         } 
     }
 }

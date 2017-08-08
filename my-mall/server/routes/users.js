@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 var Users = require('../models/users');
 var utiltool = require('../utiltool/tool.js');
 var _ = require('lodash');
+require('../utiltool/dateFormat');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -382,6 +383,77 @@ router.post('/address/del', function (req, res, next){
         }
     })
 
+})
+//创建订单
+router.post('/order/add',function(req, res, next){
+    let query = req.query;
+    let userId = req.cookies.userId;
+    let addressId = req.body.addressId;
+    let orderTotal = req.body.orderTotal;
+
+    Users.findOne({userId:userId},function (err, userDoc){
+        if(err){
+            handler4err(err, res);
+            return;           
+        }
+        if(userDoc){
+            
+            let address = {};
+            userDoc.addressList.forEach(function(item){
+                if(addressId == item.addressId){
+                    address = item
+                }
+            })
+            let goodsList = userDoc.cartList.filter(function(item){
+                return item.checked == '1'
+            })
+            let platform = '622';
+            let r1 = Math.floor(Math.random()*10);
+            let r2 = Math.floor(Math.random()*10);
+            let sysDate = new Date().Format('yyyyMMddhhmmss');
+            let createDate = new Date().Format('yyyy-MM-dd hh:mm:ss');           
+
+            let order = {
+                address: address,
+                orderTotal: orderTotal,
+                goodsList: goodsList,
+                orderStatus: '1',
+                orderId: platform + r1 + sysDate + r2 ,
+                createDate : createDate
+            };
+
+            userDoc.orderList.push(order);
+            userDoc.save(function (err2, userDoc2){
+                if(err){
+                    handler4err(err, res);
+                    return;                 
+                }
+                if(userDoc2){
+                     res.json({
+                        status: 200,
+                        msg: '添加订单成功',
+                        result:{
+                            address: order.address,
+                            orderTotal:  order.orderTotal,
+                            orderId: order.orderId
+                        }
+                    })
+                }else{
+                    res.json({
+                        status: 210,
+                        msg: '添加订单失败',
+                        result:''
+                    })
+                }
+               
+            })
+
+        }
+
+
+    })
+
+    
 })
 
 

@@ -31,8 +31,8 @@
                 <div class="navbar-menu-container">
                     <!--<a href="/" class="navbar-link">我的账户</a>-->
                     <span class="navbar-link" v-if="isLogin">{{nickName}}</span>
-                    <a href="javascript:void(0)" class="navbar-link" v-if="!isLogin" @click="openLoginModal()">Login</a>
-                    <a href="javascript:void(0)" class="navbar-link" v-if="isLogin"  @click="logout()">Logout</a>
+                    <a href="javascript:void(0)" class="navbar-link" v-if="!isLogin" @click="openLoginModal()">登录</a>
+                    <a href="javascript:void(0)" class="navbar-link" v-if="isLogin"  @click="logout()">退出</a>
                     <div class="navbar-cart-container">
                         <span class="navbar-cart-count"></span>
                         <a class="navbar-link navbar-cart-link" href="/#/cart">
