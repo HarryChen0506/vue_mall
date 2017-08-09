@@ -455,7 +455,50 @@ router.post('/order/add',function(req, res, next){
 
     
 })
+//查询订单
+router.get('/order/info', function (req, res, next){
+    let query = req.query;
+    let userId = req.cookies.userId;
+    let orderId = query.orderId;
 
+    Users.findOne({userId:userId},function (err, userDoc){
+        if(err){
+            handler4err(err, res);
+            return;           
+        }
+        if(userDoc){
+            let order = '';
+            userDoc.orderList.forEach(function (item){
+                if(item.orderId == orderId){
+                    order = item
+                }
+            })
+            if( userDoc.orderList && userDoc.orderList.length == 0){
+                 res.json({
+                    status: 520,
+                    msg: '该用户尚未创建订单',
+                    result: order
+                })
+            }
+
+            if(order){
+                res.json({
+                    status: 200,
+                    msg: '查询订单成功',
+                    result: order
+                })
+            }else{
+                res.json({
+                    status: 510,
+                    msg: '查询无该订单',
+                    result: ''
+                })
+            }
+        }
+
+    })    
+
+})
 
 
 //公用函数

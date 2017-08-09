@@ -47,21 +47,21 @@
     <div class="container">
         <div class="checkout-addr">
             <div class="page-title-normal">
-                <h2 class="page-title-h2"><span>check out</span></h2>
+                <h2 class="page-title-h2"><span>结算</span></h2>
             </div>
             <!-- process step -->
             <div class="check-step">
                 <ul>
-                <li class="cur"><span>Confirm</span> address</li>
-                <li><span>View your</span> order</li>
-                <li><span>Make</span> payment</li>
-                <li><span>Order</span> confirmation</li>
+                    <li class="cur"><span>填写收货地址</span></li>
+                    <li ><span>下单</span></li>
+                    <li ><span>支付</span></li>
+                    <li ><span>订单详情</span></li>
                 </ul>
             </div>
 
             <!-- address list -->
             <div class="page-title-normal checkout-title">
-                <h2><span>Shipping address</span></h2>
+                <h2><span>收获地址</span></h2>
             </div>
             <div class="addr-list-wrap">
                 <div class="addr-list">
@@ -87,7 +87,7 @@
                                 <i class="icon-add">
                                 <svg class="icon icon-add"><use xlink:href="#icon-add"></use></svg>
                                 </i>
-                                <p>Add new address</p>
+                                <p>添加新地址</p>
                             </div>
                         </li>
                     </ul>
@@ -105,7 +105,7 @@
 
             <!-- shipping method-->
             <div class="page-title-normal checkout-title">
-                <h2><span>Shipping method</span></h2>
+                <h2><span>物流方式</span></h2>
             </div>
             <div class="lemall-msg-info hidden">
                 <span>The region you selected is not within our delivery area. Please select another shipping address within our delivery areas.</span>
@@ -114,10 +114,10 @@
                 <div class="shipping-method">
                 <ul>
                     <li class="check">
-                    <div class="name">Standard shipping</div>
-                    <div class="price">Free</div>
+                    <div class="name">标准</div>
+                    <div class="price">免费</div>
                     <div class="shipping-tips">
-                        <p>Once shipped，Order should arrive in the destination in 1-7 business days</p>
+                        <p>一旦发货，保证在7个工作日内送达</p>
                     </div>
                     </li>
                 </ul>

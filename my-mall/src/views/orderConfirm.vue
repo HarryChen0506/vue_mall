@@ -37,30 +37,30 @@
     <div class="container">
         <div class="checkout-order">
             <div class="page-title-normal">
-                <h2 class="page-title-h2"><span>check out</span></h2>
+                <h2 class="page-title-h2"><span>结算</span></h2>
             </div>
             <!-- process step -->
             <div class="check-step">
                 <ul>
-                <li class="cur"><span>Confirm</span> address</li>
-                <li class="cur"><span>View your</span> order</li>
-                <li><span>Make</span> payment</li>
-                <li><span>Order</span> confirmation</li>
+                    <li class="cur"><span>填写收货地址</span></li>
+                    <li class="cur"><span>下单</span></li>
+                    <li ><span>支付</span></li>
+                    <li ><span>订单详情</span></li>
                 </ul>
             </div>
 
             <!-- order list -->
             <div class="page-title-normal checkout-title">
-                <h2><span>Order content</span></h2>
+                <h2><span>订单内容</span></h2>
             </div>
             <div class="item-list-wrap confirm-item-list-wrap">
                 <div class="cart-item order-item">
                     <div class="cart-item-head">
                         <ul>
-                        <li>Order contents</li>
-                        <li>Price</li>
-                        <li>Quantity</li>
-                        <li>Subtotal</li>
+                        <li>内容</li>
+                        <li>价格</li>
+                        <li>数量</li>
+                        <li>小计</li>
                         </ul>
                     </div>
                     <ul class="cart-item-list">
@@ -100,19 +100,19 @@
                 <div class="price-count">
                 <ul>
                     <li>
-                        <span>Item subtotal:</span>
+                        <span>商品累计:</span>
                         <span>{{subtotal | currency('￥ ')}}</span>
                     </li>
                     <li>
-                        <span>Shipping:</span>
+                        <span>物流成本:</span>
                         <span>{{shipping | currency('￥ ')}}</span>
                     </li>
                     <li>
-                        <span>Discount:</span>
+                        <span>折扣:</span>
                         <span>{{discount | currency('￥ ')}}</span>
                     </li>                    
                     <li class="order-total-price">
-                        <span>Order total:</span>
+                        <span>订单总额:</span>
                         <span>{{orderTotal | currency('￥ ')}}</span>
                     </li>
                 </ul>
@@ -210,6 +210,9 @@ export default {
                 //    console.log(res)
                 if(res.data.status == 200){
                    console.log(res)
+                   this.$router.push({
+                       path: '/orderSuccess?orderId='+res.data.result.orderId
+                   })
                 }else if(res.data.status == 1001){
                     alert('当前未登录');
                 }

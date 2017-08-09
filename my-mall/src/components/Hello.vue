@@ -27,6 +27,16 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App'
     }
+  },
+  mounted(){
+    this.init();
+  },
+  methods:{
+    init(){
+      this.$router.push({
+        path: '/goods'
+      })
+    }
   }
 }
 </script>
