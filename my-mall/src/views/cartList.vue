@@ -52,7 +52,7 @@
     <div class="container">
         <div class="cart">
             <div class="page-title-normal">
-                <h2 class="page-title-h2"><span>My Cart</span></h2>
+                <h2 class="page-title-h2"><span>我的购物车</span></h2>
             </div>
             <div class="item-list-wrap">
                 <div class="cart-item">

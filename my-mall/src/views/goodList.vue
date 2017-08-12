@@ -22,7 +22,7 @@
                     <!-- filter -->
                     <div class="filter stopPop" id="filter">
                         <dl class="filter-price">
-                        <dt>Price:</dt>
+                        <dt>价格筛选:</dt>
                             <dd  v-for="item in priceLevel" @click="filterByPrice(item,priceLevel)">
                                 <a :class="{'checked': item.checked}" href="javascript:void(0)">
                                     <span v-if="item.level=='all'">所有</span>
