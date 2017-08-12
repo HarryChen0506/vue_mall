@@ -34,7 +34,7 @@
                     <a href="javascript:void(0)" class="navbar-link" v-if="!isLogin" @click="openLoginModal()">登录</a>
                     <a href="javascript:void(0)" class="navbar-link" v-if="isLogin"  @click="logout()">退出</a>
                     <div class="navbar-cart-container">
-                        <span class="navbar-cart-count"></span>
+                        <span class="navbar-cart-count" v-if="cartCount>0">{{cartCount}}</span>
                         <a class="navbar-link navbar-cart-link" href="/#/cart">
                             <svg class="navbar-cart-logo">
                                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-cart"></use>
@@ -90,6 +90,11 @@ export default {
             nickName:''
         }
   },
+  computed:{
+      cartCount(){
+          return this.$store.state.cartCount
+      }
+  },
   mounted: function (){
       this.checkLogin();
   },
@@ -104,7 +109,8 @@ export default {
             axios.get('/api/users/checkLogin').then((res)=>{                
                 if(res.data.status == 200){
                     this.nickName = res.data.result.userName;
-                    this.isLogin = true;                                    
+                    this.isLogin = true;  
+                    this.getCartCount();                                 
                 }
             })
         },
@@ -120,7 +126,8 @@ export default {
                     this.isLogin = true;
                     this.errorTip = false;
                     this.userName='';
-                    this.userPwd= '';
+                    this.userPwd= '';                    
+                    this.getCartCount();
                     this.closeLoginModal(); 
                     window.location.reload(); // 等同于 window.location.href = '.....'                   
                 }else{
@@ -136,6 +143,16 @@ export default {
                 if(res.data.status == 200){
                     this.nickName = '';
                     this.isLogin = false;
+                    this.$store.commit('getCartCount',0)  
+                }
+            })
+        },
+        getCartCount: function (){
+            axios.get('/api/users/cart/count').then((res)=>{               
+                if(res.data.status == 200){
+                    this.$store.commit('getCartCount',res.data.result.data.count)            
+                }else{
+                    
                 }
             })
         }

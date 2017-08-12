@@ -256,7 +256,8 @@ export default {
                 title: '购物车',
                 content:'确定删除该商品吗？',
             }).then(()=>{
-                console.log('成功的回调')
+                console.log('成功的回调');
+                this.$store.commit('editCartCount',-parseInt(item.productNum))      
                 this.httpDelCart(item);
             },()=>{
                 console.log('失败的回调')
@@ -270,13 +271,15 @@ export default {
                 item.checked = item.checked=='1'?'0':'1';               
             }else if(flag=='add'){
                 item.productNum++;
-                item.checked = '1';              
+                item.checked = '1';  
+                this.$store.commit('editCartCount',1)            
             }else if(flag=='minus'){
                 if(item.productNum<=1){
                     return ;
                 }
                 item.productNum--;
-                item.checked = '1';                  
+                item.checked = '1';  
+                this.$store.commit('editCartCount',-1)                
             }
             axios.post('/api/users/cart/edit',{             
                 productId: productId,

@@ -195,6 +195,7 @@ export default {
                     this.mdShow = true
                 }
             })
+            this.$store.commit('editCartCount',1) 
         },
         closeModal: function (){
             this.mdShow = false;
