@@ -100,6 +100,8 @@ import axios from 'axios';
 import NavHeader from '../components/Header';
 import NavFooter from '../components/Footer';
 import Modal from '../components/modal';
+import http from '../service/http.js';    //封装的http服务，基于axios和promise
+
 export default {
     name: 'goodList',
     data () {
@@ -140,17 +142,21 @@ export default {
         }
     },
     methods: {
-       
         log: function (val){
             return console.log(val);
         },
         getGoodsList: function (params){
             // console.log('goodsList');
-            axios.get('/api/goods',{
-               params:params
-            }).then(
+            // axios.get('/api/goods',{
+            //    params:params
+            // }).then(
+            //    res => {
+            //     //    console.log(res)
+            //        this.goodLists = this.goodLists.concat(res.data.result.data) ;
+            //     }
+            // )
+            http.getGoodsList(params).then(
                res => {
-                //    console.log(res)
                    this.goodLists = this.goodLists.concat(res.data.result.data) ;
                 }
             )
@@ -186,7 +192,16 @@ export default {
             let params = {
                 productId: good.productId
             }
-            axios.post('/api/goods/addCart',params).then((res)=>{
+            // axios.post('/api/goods/addCart',params).then((res)=>{
+            //     if(res.data.status == 200){
+            //         // alert(res.data.msg||'添加购物车成功')
+            //         this.mdShow_todo = true
+            //     }else{
+            //         //  alert(res.data.msg||'添加购物车失败')
+            //         this.mdShow = true
+            //     }
+            // })
+            http.postAddCart(params).then((res)=>{
                 if(res.data.status == 200){
                     // alert(res.data.msg||'添加购物车成功')
                     this.mdShow_todo = true
