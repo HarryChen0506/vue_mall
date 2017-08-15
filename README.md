@@ -3,8 +3,8 @@ vue+node+express+mongoDB,粗浅地实现一个商城的登录，商品列表，�
  1) 基于axios和promise进行了一次http服务的封装，便于管理请求api；
  2) 使用vuex对购物车数量进行了状态管理
 
-## 项目演示地址
-http://106.15.198.124
+## 项目演示
+[live demo](http://106.15.198.124)
 
 ## Build Setup
 
