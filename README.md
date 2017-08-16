@@ -6,7 +6,7 @@ vue+node+express+mongoDB,粗浅地实现一个商城的登录，商品列表，�
 ## 项目演示
 [live demo](http://106.15.198.124)
 
-## Build Setup
+## 前端build setup
 
 ``` bash
 # install dependencies
@@ -20,4 +20,17 @@ npm run build
 
 # build for production and view the bundle analyzer report
 npm run build --report
+```
+
+## 后端build setup
+``` bash
+# cd
+cd /vue_mall/my-mall/server/
+
+# install dependencies
+npm install
+
+# serve at localhost:3000
+node ./bin/www
+
 ```
