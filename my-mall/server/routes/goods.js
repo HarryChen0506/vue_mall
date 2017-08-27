@@ -7,7 +7,7 @@ var Users = require('../models/users');
 var utiltool = require('../utiltool/tool.js');
 
 //链接数据库
-mongoose.connect('mongodb://user:!QAZ2wsx@127.0.0.1:27017/mall',{useMongoClient:true});
+mongoose.connect('mongodb://user2:QAZwsx@127.0.0.1:27017/mall',{useMongoClient:true});
 //监听是否链接成功
 mongoose.connection.on('connected', function (){
     console.log('MongoDB connected success.')
